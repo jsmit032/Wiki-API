@@ -76,13 +76,41 @@ app.route('/articles')
       Article.replaceOne(
         {title: requestedTitle},
         {title: req.body.title, content: req.body.content},
-        function(err, results){
+        function(err){
           if (!err) {
             res.json('Succesfully updated article!');
           } else {
             res.send(err);
           }
       });
+    })
+
+    .patch(function(req, res){
+      const requestedTitle = req.params.articleTitle;
+      Article.update(
+        {title: requestedTitle},
+        {$set: req.body},
+        function(err) {
+          if (!err) {
+            res.send("Succesfully updated article!");
+          } else {
+            res.send(err);
+          }
+        });
+    })
+
+    .delete(function(req, res){
+      const requestedTitle = req.params.articleTitle;
+      Article.deleteOne(
+        {title: requestedTitle},
+        function(err){
+          if (!err) {
+            res.send("Succesfully deleted article!");
+          } else {
+            res.send(err);
+          }
+        }
+      );
     }); // end chain
 
 app.listen(3000, function(){
