@@ -23,9 +23,13 @@ const articleSchema = new mongoose.Schema({
 const Article = mongoose.model('Article', articleSchema);
 
 // RESTful API Creation
-app.get('route', function(req, res){
+app.get('/articles', function(req, res){
   Article.find({}, function(err, foundArticles){
-    // use found results docs
+    if (!err) {
+      res.send(foundArticles);
+    } else {
+      res.send(err);
+    }
   });
 });
 
