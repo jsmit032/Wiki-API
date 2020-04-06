@@ -22,7 +22,7 @@ const articleSchema = new mongoose.Schema({
 
 const Article = mongoose.model('Article', articleSchema);
 
-// RESTful API Creation
+/////////////////////////// Requests for All Articles ////////////////////////////////
 
 app.route('/articles')
   .get(function(req, res){
@@ -57,13 +57,14 @@ app.route('/articles')
     });
   });
 
-  // Routes to GET, UPDATE, DELETE SPECIFIC Article
+/////////////////////////// Requests for a Specific Article ////////////////////////////////
 
-  app.route('/articles/:article_id')
+  app.route('/articles/:articleTitle')
     .get(function(req, res){
-      Article.findById(req.params.article_id, function(err, foundArticle){
+      const requestedTitle = req.params.articleTitle;
+      Article.findOne({ title: requestedTitle }, function(err, foundArticle){
         if (!err) {
-          res.send('/articles/' + req.params.article_id);
+          res.json(foundArticle);
         } else {
           res.send(err);
         }
